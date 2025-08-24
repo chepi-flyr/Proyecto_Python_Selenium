@@ -1,0 +1,173 @@
+{
+  "uid" : "58e7a179507ce7b8",
+  "name" : "Ingresar a Mercado Libre y buscar un producto con diferentes artículos -- @1.2 ",
+  "fullName" : "Buscar producto en Mercado Libre: Ingresar a Mercado Libre y buscar un producto con diferentes artículos",
+  "historyId" : "7aa79a18c3eff6e8e88b6a9696d8d073",
+  "time" : {
+    "start" : 1756061651155,
+    "stop" : 1756061672622,
+    "duration" : 21467
+  },
+  "status" : "passed",
+  "flaky" : false,
+  "beforeStages" : [ ],
+  "testStage" : {
+    "status" : "passed",
+    "steps" : [ {
+      "name" : "Given el usuario abre el navegador de pruebas",
+      "time" : {
+        "start" : 1756061651156,
+        "stop" : 1756061655748,
+        "duration" : 4592
+      },
+      "status" : "passed",
+      "steps" : [ ],
+      "attachments" : [ {
+        "uid" : "843c17dffa5f2813",
+        "name" : "Captura de pantalla",
+        "source" : "843c17dffa5f2813.png",
+        "type" : "image/png",
+        "size" : 7035
+      } ],
+      "parameters" : [ ],
+      "attachmentsCount" : 1,
+      "shouldDisplayMessage" : false,
+      "hasContent" : true,
+      "stepsCount" : 0
+    }, {
+      "name" : "When ingresa a la pagina de Mercado Libre",
+      "time" : {
+        "start" : 1756061655748,
+        "stop" : 1756061658943,
+        "duration" : 3195
+      },
+      "status" : "passed",
+      "steps" : [ ],
+      "attachments" : [ {
+        "uid" : "44b5051ce2f81c00",
+        "name" : "Captura de pantalla",
+        "source" : "44b5051ce2f81c00.png",
+        "type" : "image/png",
+        "size" : 260450
+      } ],
+      "parameters" : [ ],
+      "attachmentsCount" : 1,
+      "shouldDisplayMessage" : false,
+      "hasContent" : true,
+      "stepsCount" : 0
+    }, {
+      "name" : "When usuario busca el producto Xbox Series X",
+      "time" : {
+        "start" : 1756061658944,
+        "stop" : 1756061661307,
+        "duration" : 2363
+      },
+      "status" : "passed",
+      "steps" : [ ],
+      "attachments" : [ {
+        "uid" : "526191e82a255cc4",
+        "name" : "Captura de pantalla",
+        "source" : "526191e82a255cc4.png",
+        "type" : "image/png",
+        "size" : 259439
+      } ],
+      "parameters" : [ ],
+      "attachmentsCount" : 1,
+      "shouldDisplayMessage" : false,
+      "hasContent" : true,
+      "stepsCount" : 0
+    }, {
+      "name" : "When usuario presiona la tecla Enter",
+      "time" : {
+        "start" : 1756061661307,
+        "stop" : 1756061664066,
+        "duration" : 2759
+      },
+      "status" : "passed",
+      "steps" : [ ],
+      "attachments" : [ {
+        "uid" : "84022116134dc68",
+        "name" : "Captura de pantalla",
+        "source" : "84022116134dc68.png",
+        "type" : "image/png",
+        "size" : 145642
+      } ],
+      "parameters" : [ ],
+      "attachmentsCount" : 1,
+      "shouldDisplayMessage" : false,
+      "hasContent" : true,
+      "stepsCount" : 0
+    }, {
+      "name" : "Then verifica que se muestran los resultados de la búsqueda con el elemento buscado \"//a[contains(text(),'Xbox Series X Blanco')]\" y el texto esperado \"Xbox Series X Blanco\"",
+      "time" : {
+        "start" : 1756061664066,
+        "stop" : 1756061668530,
+        "duration" : 4464
+      },
+      "status" : "passed",
+      "steps" : [ ],
+      "attachments" : [ {
+        "uid" : "a70a2086b407eb63",
+        "name" : "Captura de pantalla",
+        "source" : "a70a2086b407eb63.png",
+        "type" : "image/png",
+        "size" : 145642
+      } ],
+      "parameters" : [ ],
+      "attachmentsCount" : 1,
+      "shouldDisplayMessage" : false,
+      "hasContent" : true,
+      "stepsCount" : 0
+    } ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "attachmentsCount" : 5,
+    "shouldDisplayMessage" : false,
+    "hasContent" : true,
+    "stepsCount" : 5
+  },
+  "afterStages" : [ ],
+  "labels" : [ {
+    "name" : "severity",
+    "value" : "normal"
+  }, {
+    "name" : "tag",
+    "value" : "mercado_libre"
+  }, {
+    "name" : "tag",
+    "value" : "mercado_libre_scenario_outline"
+  }, {
+    "name" : "feature",
+    "value" : "Buscar producto en Mercado Libre"
+  }, {
+    "name" : "framework",
+    "value" : "behave"
+  }, {
+    "name" : "language",
+    "value" : "cpython3"
+  }, {
+    "name" : "resultFormat",
+    "value" : "allure2"
+  } ],
+  "parameters" : [ {
+    "name" : "Articulo",
+    "value" : "Xbox Series X"
+  }, {
+    "name" : "ElementoBusqueda",
+    "value" : "//a[contains(text(),'Xbox Series X Blanco')]"
+  }, {
+    "name" : "TextoEsperado",
+    "value" : "Xbox Series X Blanco"
+  } ],
+  "links" : [ ],
+  "hidden" : false,
+  "retry" : false,
+  "extra" : {
+    "severity" : "normal",
+    "retries" : [ ],
+    "categories" : [ ],
+    "tags" : [ "mercado_libre_scenario_outline", "mercado_libre" ]
+  },
+  "source" : "58e7a179507ce7b8.json",
+  "parameterValues" : [ "Xbox Series X", "//a[contains(text(),'Xbox Series X Blanco')]", "Xbox Series X Blanco" ]
+}

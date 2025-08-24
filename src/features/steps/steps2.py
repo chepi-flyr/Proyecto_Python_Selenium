@@ -9,7 +9,7 @@ from selenium.webdriver.common.keys import Keys
 import allure
 import os
 from datetime import datetime
-#import src.Functions_Utilitaries.functions as func
+import src.Functions_Utilitaries.Functions as func
 
 @given('el usuario abre el navegador de pruebas')
 def step_open_navegador(context):
@@ -24,50 +24,35 @@ def step_open_navegador(context):
     service = ChromeService(executable_path=ChromeDriverManager().install())
     context.driver = webdriver.Chrome(service=service, options=options)
 
+    func.add_screenshot(context)
+    func.screenshot_test(context)
+
 @when('ingresa a la pagina de Mercado Libre')
 def step_ingresa_pagina(context):
     context.driver.get("https://www.mercadolibre.co.cr/")
 
-    screenshot = context.driver.get_screenshot_as_png()
-    allure.attach(
-        screenshot,
-        name="Captura de pantalla",
-        attachment_type=allure.attachment_type.PNG
-    )
-    time.sleep(2)
+    func.add_screenshot(context)
+    func.screenshot_test(context)
 
 @when('usuario busca el producto {Articulo}')
 def step_buscar_producto(context, Articulo):
     text_busqueda = context.driver.find_element(By.XPATH,"//input[@id='cb1-edit']").send_keys(Articulo)
-    screenshot = context.driver.get_screenshot_as_png()
-    allure.attach(
-        screenshot,
-        name="Captura de pantalla",
-        attachment_type=allure.attachment_type.PNG
-    )
-    time.sleep(2)
+
+    func.add_screenshot(context)
+    func.screenshot_test(context)
 
 @when('usuario presiona la tecla Enter')
 def step_presiona_enter(context):
     context.driver.find_element(By.XPATH,"//input[@id='cb1-edit']").send_keys(Keys.ENTER)
-    screenshot = context.driver.get_screenshot_as_png()
-    allure.attach(
-        screenshot,
-        name="Captura de pantalla",
-        attachment_type=allure.attachment_type.PNG
-    )
-    time.sleep(2)
+
+    func.add_screenshot(context)
+    func.screenshot_test(context)
 
 @then('verifica que se muestran los resultados de la búsqueda con el elemento buscado "{ElementoBusqueda}" y el texto esperado "{TextoEsperado}"')
 def step_verifica_elemento(context, ElementoBusqueda, TextoEsperado):
 
-    screenshot = context.driver.get_screenshot_as_png()
-    allure.attach(
-        screenshot,
-        name="Captura de pantalla",
-        attachment_type=allure.attachment_type.PNG
-    )
-    time.sleep(2)
+    func.add_screenshot(context)
+    func.screenshot_test(context)
     
     elemento_destino = context.driver.find_element(By.XPATH,ElementoBusqueda)
     assert TextoEsperado in elemento_destino.text, f'El texto esperado "{TextoEsperado}" no se encontró en el elemento.'
