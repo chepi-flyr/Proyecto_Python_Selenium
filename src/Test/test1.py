@@ -35,4 +35,4 @@ class GoogleTest(unittest.TestCase):
         self.driver.quit()
 
 if __name__ == '__main__':
-    unittest.main(testRunner=HtmlTestRunner.HTMLTestRunner(output=r'..\report\results'))
+    unittest.main(testRunner=HtmlTestRunner.HTMLTestRunner(output=r'..\reporthtmlrunner'))
