@@ -29,7 +29,7 @@ class GoogleTest(unittest.TestCase):
         self.driver.get("https://www.mercadolibre.co.cr/")
         self.driver.find_element("xpath","//input[@id='cb1-edit']").send_keys("Play Station 5")
         self.driver.find_element("xpath","//input[@id='cb1-edit']").send_keys(Keys.ENTER)
-        self.assertIn("Playstation 5 Slim Digital Avenida Tecnologica", self.driver.find_element("xpath","//a[normalize-space()='Playstation 5 Slim Digital Avenida Tecnologica']").text)
+        self.assertIn("Playstation 5 Pro 2tb Avenida Tecnologica", self.driver.find_element("xpath","//a[normalize-space()='Playstation 5 Pro 2tb Avenida Tecnologica']").text)
 
     def tearDown(self):
         self.driver.quit()
