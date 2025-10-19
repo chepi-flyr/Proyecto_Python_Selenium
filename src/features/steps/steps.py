@@ -6,7 +6,7 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.action_chains import ActionChains
-import src.Functions_Utilitaries.Functions as func
+from ...Functions_Utilitaries import Functions as func
 
 @given('el usuario abre el navegador')
 def step_open_navegador(context):

@@ -9,7 +9,7 @@ from selenium.webdriver.common.keys import Keys
 import allure
 import os
 from datetime import datetime
-import src.Functions_Utilitaries.Functions as func
+from ...Functions_Utilitaries import Functions as func
 
 @given('el usuario abre el navegador de pruebas')
 def step_open_navegador(context):
