@@ -1,0 +1,2 @@
+Ingreso al sitio de la prueba: Your Store
+El mensaje de registro exitoso es: Congratulations! Your new account has been successfully created!

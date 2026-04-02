@@ -12,7 +12,7 @@ def add_screenshot(context, name = "Captura de pantalla"):
     )
     time.sleep(2)
 
-def screenshot_test(context, screenshoot_dir = "src/img/"):
+def screenshot_test(context, screenshoot_dir = "../img/"):
     os.makedirs(screenshoot_dir, exist_ok = True)
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     file_name = f"screenshot_{timestamp}.png"

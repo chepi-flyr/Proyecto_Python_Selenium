@@ -88,5 +88,5 @@ def teardown(self):
 #Ejecución de la prueba utilizando el runner de HTMLTestRunner para generar un reporte en formato HTML o 
 #sin utilizar el runner para generar la información de la ejecución en consola, no ambos a la vez
 if __name__ == '__main__':
-    #unittest.main(testRunner=HtmlTestRunner.HTMLTestRunner(output=r"..\reporthtmlrunner"))
-    unittest.main()
+    unittest.main(testRunner=HtmlTestRunner.HTMLTestRunner(output=r"..\reporthtmlrunner"))
+    #unittest.main()
