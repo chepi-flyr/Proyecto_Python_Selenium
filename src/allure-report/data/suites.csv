@@ -1,4 +1,0 @@
-"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
-"Esta prueba automatizada realiza el proceso de registro de un nuevo usuario en el sitio de prueba DemoQA, utilizando Selenium WebDriver
-                        para interactuar con el navegador y realizar las acciones necesarias para completar el proceso de registro.","19811","test_demoQA_text_box","Test","2026-04-01","passed","2026-04-01","Test","prueba_allure#3","",""
-"Caso de prueba para verificar el</br> login y </br> registro en el aplicativo web de pruebas","43175","test_001","Test","2026-04-01","passed","2026-04-01","Test","prueba_allure#2","",""
