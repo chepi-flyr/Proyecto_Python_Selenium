@@ -25,50 +25,50 @@ class TestPractica(unittest.TestCase):
 
     def test_open_cart(self):
         driver = self.driver
-        wait = WebDriverWait(driver, 20)
-        import time # Añadido para pausas breves
+        wait = WebDriverWait(driver, 25)
+        import time
         
+        # 1. Navegación directa
         driver.get("http://opencart.abstracta.us/index.php?route=account/register")
-        print(f'Ingreso al registro. Título: {driver.title}')
-
-        # Datos dinámicos
-        user_email = f"tester.automation.{random.randint(1000, 999999)}@gmail.com"
         
-        # Llenado con pequeñas pausas para burlar bloqueos básicos
-        wait.until(EC.visibility_of_element_located((By.ID, "input-firstname"))).send_keys("Sergio")
-        time.sleep(0.5)
-        driver.find_element(By.ID, "input-lastname").send_keys("Tester")
+        # 2. Datos frescos y seguros
+        user_email = f"auto.test.{random.randint(1000, 999999)}@gmail.com"
+        password_final = "Secret.Pass.2026!" # Contraseña compleja e inequívoca
+
+        # 3. Llenado con esperas precisas
+        name_field = wait.until(EC.element_to_be_clickable((By.ID, "input-firstname")))
+        name_field.send_keys("Sergio")
+        driver.find_element(By.ID, "input-lastname").send_keys("QA")
         driver.find_element(By.ID, "input-email").send_keys(user_email)
-        driver.find_element(By.ID, "input-telephone").send_keys("3001234567")
+        driver.find_element(By.ID, "input-telephone").send_keys("1234567890")
         
-        # Usamos una contraseña muy robusta
-        secure_pass = "Automation.2026!"
-        driver.find_element(By.ID, "input-password").send_keys(secure_pass)
-        driver.find_element(By.ID, "input-confirm").send_keys(secure_pass)
-        time.sleep(0.5)
+        driver.find_element(By.ID, "input-password").send_keys(password_final)
+        driver.find_element(By.ID, "input-confirm").send_keys(password_final)
 
-        # Clics con JS para evitar problemas de visibilidad en Headless
-        agree_check = driver.find_element(By.NAME, "agree")
-        driver.execute_script("arguments[0].click();", agree_check)
+        # 4. Forzar Clics de Consentimiento con JavaScript (Garantiza éxito en Headless)
+        # Política de privacidad
+        agree = driver.find_element(By.NAME, "agree")
+        driver.execute_script("arguments[0].checked = true;", agree)
         
-        continue_btn = driver.find_element(By.XPATH, "//input[@value='Continue']")
-        driver.execute_script("arguments[0].click();", continue_btn)
+        # Botón Continue
+        submit = driver.find_element(By.CSS_SELECTOR, "input.btn-primary")
+        driver.execute_script("arguments[0].click();", submit)
 
-        # VALIDACIÓN MEJORADA
+        # 5. Validación de Éxito
         try:
-            # Esperamos a ver si la URL cambia
-            wait.until(EC.url_contains("success"))
-            print("¡Registro exitoso detectado por URL!")
+            # Esperamos a que el encabezado de éxito aparezca
+            success_h1 = wait.until(EC.presence_of_element_located((By.XPATH, "//h1[contains(text(),'Created')]")))
+            print(f"¡ÉXITO TOTAL!: {success_h1.text}")
         except:
-            print("No se detectó redirección. Buscando mensajes de error en la página...")
-            # Si no redirigió, buscamos los textos de error que pone OpenCart (clase text-danger)
-            errors = driver.find_elements(By.CLASS_NAME, "text-danger")
-            for err in errors:
-                print(f"ERROR ENCONTRADO EN PÁGINA: {err.text}")
+            # Captura de errores visibles si no hubo éxito
+            print("--- ERRORES DETECTADOS EN LA PÁGINA ---")
+            page_errors = driver.find_elements(By.CLASS_NAME, "text-danger")
+            for error in page_errors:
+                print(f"ALERTA: {error.text}")
             
-            # Guardamos captura para que la veas en el workspace de Jenkins
-            driver.save_screenshot("DEBUG_REGISTRO_FALLIDO.png")
-            raise Exception("El registro falló. Revisa los errores impresos arriba.")
+            driver.save_screenshot("captura_error_final.png")
+            print(f"URL al fallar: {driver.current_url}")
+            raise Exception("No se pudo completar el registro.")
 
         # Asegurar que la carpeta de imágenes exista relativa al script
         img_dir = os.path.join(os.path.dirname(__file__), "../../img")
