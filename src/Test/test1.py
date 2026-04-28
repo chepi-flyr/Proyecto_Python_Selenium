@@ -26,47 +26,54 @@ class TestPractica(unittest.TestCase):
 
     def test_open_cart(self):
         driver = self.driver
-        wait = WebDriverWait(driver, 25)
+        wait = WebDriverWait(driver, 30)
         
+        # 1. Navegación directa
         driver.get("http://opencart.abstracta.us/index.php?route=account/register")
-        print(f"DEBUG - Título inicial: {driver.title}")
-
-        user_email = f"qa.master.{random.randint(10000, 999999)}@testing.com"
         
-        # Llenado robusto
-        wait.until(EC.presence_of_element_located((By.ID, "input-firstname"))).send_keys("Sergio")
-        driver.find_element(By.ID, "input-lastname").send_keys("Castaño")
+        # 2. Datos que parecen humanos
+        random_num = random.randint(1000, 9999)
+        user_email = f"sergio.qa.colombia{random_num}@outlook.com" # Cambiamos dominio a uno común
+        
+        # 3. Llenado con esperas
+        wait.until(EC.visibility_of_element_located((By.ID, "input-firstname"))).send_keys("Sergio")
+        driver.find_element(By.ID, "input-lastname").send_keys("Castano")
         driver.find_element(By.ID, "input-email").send_keys(user_email)
-        driver.find_element(By.ID, "input-telephone").send_keys("12345678")
+        driver.find_element(By.ID, "input-telephone").send_keys("3124567890") # Teléfono formato real
         
-        pass_val = "Pass.2026.Success!"
-        driver.find_element(By.ID, "input-password").send_keys(pass_val)
-        driver.find_element(By.ID, "input-confirm").send_keys(pass_val)
+        secure_pass = "Prueba.2026.Jenkins!"
+        driver.find_element(By.ID, "input-password").send_keys(secure_pass)
+        driver.find_element(By.ID, "input-confirm").send_keys(secure_pass)
 
-        # Clics forzados
-        agree = driver.find_element(By.NAME, "agree")
-        driver.execute_script("arguments[0].click();", agree)
-        
-        # En lugar de Enter, probamos el clic de JS en el botón específico
-        btn = driver.find_element(By.CSS_SELECTOR, "input.btn-primary")
-        driver.execute_script("arguments[0].click();", btn)
+        # 4. Forzado de consentimiento (MUY IMPORTANTE)
+        # Marcamos el checkbox directamente por su propiedad 'checked' para asegurar que el sitio lo vea
+        agree_check = driver.find_element(By.NAME, "agree")
+        driver.execute_script("arguments[0].checked = true;", agree_check)
 
+        # 5. Envío mediante el método submit() del formulario completo
+        # Esto es más potente que hacer clic en el botón
+        registration_form = driver.find_element(By.ID, "input-firstname") # Cualquier elemento del form sirve
+        registration_form.submit()
+
+        # 6. Validación de éxito
         try:
-            # Esperamos 15 segundos a que la URL cambie
+            # Esperamos a que la URL contenga 'success'
             wait.until(EC.url_contains("success"))
-            print(f"REGISTRO EXITOSO para: {user_email}")
+            print(f"¡EXITO TOTAL! Registro completado para: {user_email}")
         except:
-            # SI FALLA, ESTO NOS DIRÁ LA VERDAD:
-            print(f"DEBUG - URL al fallar: {driver.current_url}")
-            print(f"DEBUG - Título al fallar: {driver.title}")
+            # Si falla, tomamos foto y vemos qué dice el título
+            print(f"Fallo en URL: {driver.current_url}")
+            print(f"Título de página al fallar: {driver.title}")
             
-            # Buscamos alertas rojas de OpenCart
-            alertas = driver.find_elements(By.CSS_SELECTOR, ".alert, .text-danger")
-            for a in alertas:
-                print(f"MENSAJE DEL SITIO: {a.text}")
+            # Buscamos cualquier texto de error en la página
+            all_text = driver.find_element(By.TAG_NAME, "body").text
+            if "already registered" in all_text:
+                print("EL ERROR ES: Email ya registrado.")
+            elif "Privacy Policy" in all_text:
+                print("EL ERROR ES: No se aceptó la política de privacidad.")
             
-            driver.save_screenshot("EVIDENCIA_FALLO_FINAL.png")
-            raise Exception("El sitio mostró errores o no redirigió.")
+            driver.save_screenshot("DEBUG_FINAL_18.png")
+            raise Exception("No se logró la redirección a Success.")
 
         # Asegurar que la carpeta de imágenes exista relativa al script
         img_dir = os.path.join(os.path.dirname(__file__), "../../img")
