@@ -53,7 +53,7 @@ class TestPractica(unittest.TestCase):
 
         # 5. Envío y "Salto de Fe"
         # Usamos submit para que el navegador mande los datos y no esperaremos redirección
-        try:    
+        try:        
             btn = driver.find_element(By.CSS_SELECTOR, "input.btn-primary")
             driver.execute_script("arguments[0].click();", btn)
             print(f"Paso 3: Formulario enviado para el usuario: {user_email}")
@@ -83,4 +83,5 @@ class TestPractica(unittest.TestCase):
         self.driver.quit()  
 
 if __name__ == '__main__':
-    unittest.main(testRunner=HtmlTestRunner.HTMLTestRunner(output=r"..\reporthtmlrunner"))
+    # Quitamos el '..\' para que la carpeta se cree dentro de la ruta actual de Jenkins
+    unittest.main(testRunner=HtmlTestRunner.HTMLTestRunner(output=r"reporthtmlrunner"))
