@@ -10,6 +10,7 @@ from selenium.webdriver.support import expected_conditions as EC # NUEVO
 import os
 import random # NUEVO para el email.
 from datetime import datetime
+from selenium.webdriver.common.keys import Keys
 
 class TestPractica(unittest.TestCase):
     def setUp(self):
@@ -27,54 +28,43 @@ class TestPractica(unittest.TestCase):
         driver = self.driver
         wait = WebDriverWait(driver, 30)
         
-        # 1. Navegación directa para evitar errores de menú
+        # 1. Navegación directa
         driver.get("http://opencart.abstracta.us/index.php?route=account/register")
-        print(f"Página cargada: {driver.title}")
-
-        # 2. Datos inequívocos
-        random_id = random.randint(10000, 99999)
-        user_email = f"tester.qa.{random_id}@gmail.com"
         
-        # 3. Llenado asegurando visibilidad
-        first_name = wait.until(EC.visibility_of_element_located((By.ID, "input-firstname")))
+        # 2. Datos aleatorios
+        user_email = f"final.test.{random.randint(10000, 999999)}@example.com"
+        
+        # 3. Llenado asegurando interacción
+        first_name = wait.until(EC.element_to_be_clickable((By.ID, "input-firstname")))
         first_name.send_keys("Sergio")
-        driver.find_element(By.ID, "input-lastname").send_keys("Automation")
+        driver.find_element(By.ID, "input-lastname").send_keys("Tester")
         driver.find_element(By.ID, "input-email").send_keys(user_email)
-        driver.find_element(By.ID, "input-telephone").send_keys("3101234567") # Formato estándar
+        driver.find_element(By.ID, "input-telephone").send_keys("3001234567")
         
-        secure_pass = "Complex.Pass.2026!"
-        driver.find_element(By.ID, "input-password").send_keys(secure_pass)
+        secure_pass = "Admin.12345!"
+        pass_field = driver.find_element(By.ID, "input-password")
+        pass_field.send_keys(secure_pass)
         driver.find_element(By.ID, "input-confirm").send_keys(secure_pass)
 
-        # 4. ACCIÓN DOBLE: Forzamos el check de privacidad de dos formas
-        agree_checkbox = driver.find_element(By.NAME, "agree")
-        driver.execute_script("arguments[0].scrollIntoView(true);", agree_checkbox)
-        driver.execute_script("arguments[0].click();", agree_checkbox)
-        if not agree_checkbox.is_selected(): # Si falló el clic, lo marcamos por propiedad
-            driver.execute_script("arguments[0].checked = true;", agree_checkbox)
+        # 4. Forzar el check de privacidad
+        agree = driver.find_element(By.NAME, "agree")
+        driver.execute_script("arguments[0].click();", agree)
 
-        # 5. Envío del formulario
-        continue_button = driver.find_element(By.CSS_SELECTOR, "input.btn-primary")
-        driver.execute_script("arguments[0].click();", continue_button)
+        # 5. EL CAMBIO CLAVE: Simular presionar ENTER en lugar de hacer clic en el botón
+        # Esto dispara el formulario directamente desde el teclado
+        pass_field.send_keys(Keys.ENTER)
 
-        # 6. Validación definitiva
+        # 6. Validación definitiva con la URL
         try:
-            # Esperamos a que el texto 'Created' aparezca en cualquier lugar del body
-            wait.until(EC.text_to_be_present_in_element((By.TAG_NAME, "body"), "Your Account Has Been Created!"))
-            print(f"¡REGISTRO EXITOSO! Usuario: {user_email}")
+            # Si el registro funciona, la URL DEBE cambiar a algo que contenga 'success'
+            wait.until(EC.url_contains("success"))
+            print(f"¡LO LOGRAMOS! URL de éxito: {driver.current_url}")
         except:
-            print("--- DIAGNÓSTICO DE FALLO ---")
-            # Leemos los mensajes de error reales que el sitio pone en pantalla
-            alert_danger = driver.find_elements(By.CLASS_NAME, "alert-danger")
-            for alert in alert_danger:
-                print(f"ALERTA DEL SITIO: {alert.text}")
-            
-            text_errors = driver.find_elements(By.CLASS_NAME, "text-danger")
-            for error in text_errors:
-                print(f"CAMPO CON ERROR: {error.text}")
-                
-            driver.save_screenshot("captura_final_debug.png")
-            raise Exception("El registro no fue exitoso. Revisa los errores del sitio arriba.")
+            print(f"URL al fallar: {driver.current_url}")
+            driver.save_screenshot("ERROR_FINAL_ESTA_SI.png")
+            # Imprime el texto de la página para ver si hay errores ocultos
+            print("Contenido de la página al fallar: " + driver.title)
+            raise Exception("El sitio no redirigió a la página de éxito.")
 
         # Asegurar que la carpeta de imágenes exista relativa al script
         img_dir = os.path.join(os.path.dirname(__file__), "../../img")
