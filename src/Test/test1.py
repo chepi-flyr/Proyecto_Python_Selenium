@@ -26,45 +26,47 @@ class TestPractica(unittest.TestCase):
 
     def test_open_cart(self):
         driver = self.driver
-        wait = WebDriverWait(driver, 30)
+        wait = WebDriverWait(driver, 25)
         
-        # 1. Navegación directa
         driver.get("http://opencart.abstracta.us/index.php?route=account/register")
-        
-        # 2. Datos aleatorios
-        user_email = f"final.test.{random.randint(10000, 999999)}@example.com"
-        
-        # 3. Llenado asegurando interacción
-        first_name = wait.until(EC.element_to_be_clickable((By.ID, "input-firstname")))
-        first_name.send_keys("Sergio")
-        driver.find_element(By.ID, "input-lastname").send_keys("Tester")
-        driver.find_element(By.ID, "input-email").send_keys(user_email)
-        driver.find_element(By.ID, "input-telephone").send_keys("3001234567")
-        
-        secure_pass = "Admin.12345!"
-        pass_field = driver.find_element(By.ID, "input-password")
-        pass_field.send_keys(secure_pass)
-        driver.find_element(By.ID, "input-confirm").send_keys(secure_pass)
+        print(f"DEBUG - Título inicial: {driver.title}")
 
-        # 4. Forzar el check de privacidad
+        user_email = f"qa.master.{random.randint(10000, 999999)}@testing.com"
+        
+        # Llenado robusto
+        wait.until(EC.presence_of_element_located((By.ID, "input-firstname"))).send_keys("Sergio")
+        driver.find_element(By.ID, "input-lastname").send_keys("Castaño")
+        driver.find_element(By.ID, "input-email").send_keys(user_email)
+        driver.find_element(By.ID, "input-telephone").send_keys("12345678")
+        
+        pass_val = "Pass.2026.Success!"
+        driver.find_element(By.ID, "input-password").send_keys(pass_val)
+        driver.find_element(By.ID, "input-confirm").send_keys(pass_val)
+
+        # Clics forzados
         agree = driver.find_element(By.NAME, "agree")
         driver.execute_script("arguments[0].click();", agree)
+        
+        # En lugar de Enter, probamos el clic de JS en el botón específico
+        btn = driver.find_element(By.CSS_SELECTOR, "input.btn-primary")
+        driver.execute_script("arguments[0].click();", btn)
 
-        # 5. EL CAMBIO CLAVE: Simular presionar ENTER en lugar de hacer clic en el botón
-        # Esto dispara el formulario directamente desde el teclado
-        pass_field.send_keys(Keys.ENTER)
-
-        # 6. Validación definitiva con la URL
         try:
-            # Si el registro funciona, la URL DEBE cambiar a algo que contenga 'success'
+            # Esperamos 15 segundos a que la URL cambie
             wait.until(EC.url_contains("success"))
-            print(f"¡LO LOGRAMOS! URL de éxito: {driver.current_url}")
+            print(f"REGISTRO EXITOSO para: {user_email}")
         except:
-            print(f"URL al fallar: {driver.current_url}")
-            driver.save_screenshot("ERROR_FINAL_ESTA_SI.png")
-            # Imprime el texto de la página para ver si hay errores ocultos
-            print("Contenido de la página al fallar: " + driver.title)
-            raise Exception("El sitio no redirigió a la página de éxito.")
+            # SI FALLA, ESTO NOS DIRÁ LA VERDAD:
+            print(f"DEBUG - URL al fallar: {driver.current_url}")
+            print(f"DEBUG - Título al fallar: {driver.title}")
+            
+            # Buscamos alertas rojas de OpenCart
+            alertas = driver.find_elements(By.CSS_SELECTOR, ".alert, .text-danger")
+            for a in alertas:
+                print(f"MENSAJE DEL SITIO: {a.text}")
+            
+            driver.save_screenshot("EVIDENCIA_FALLO_FINAL.png")
+            raise Exception("El sitio mostró errores o no redirigió.")
 
         # Asegurar que la carpeta de imágenes exista relativa al script
         img_dir = os.path.join(os.path.dirname(__file__), "../../img")
