@@ -31,7 +31,7 @@ class TestPractica(unittest.TestCase):
         
         # 1. Navegación directa
         driver.get("http://opencart.abstracta.us/index.php?route=account/register")
-        print("Paso 1: Página cargada correctamente.")
+        print("Paso 1: Pagina cargada correctamente.")
 
         # 2. Datos dinámicos
         user_email = f"jenkins.success.{random.randint(1000, 9999)}@outlook.com"
@@ -49,7 +49,7 @@ class TestPractica(unittest.TestCase):
         # 4. Forzado de Checkbox
         agree = driver.find_element(By.NAME, "agree")
         driver.execute_script("arguments[0].checked = true;", agree)
-        print("Paso 2: Formulario lleno y términos aceptados.")
+        print("Paso 2: Formulario lleno y terminos aceptados.")
 
         # 5. Envío y "Salto de Fe"
         # Usamos submit para que el navegador mande los datos y no esperaremos redirección
@@ -62,14 +62,14 @@ class TestPractica(unittest.TestCase):
             import time
             time.sleep(5) 
             
-            print("--- TEST FINALIZADO CON ÉXITO ---")
+            print("--- TEST FINALIZADO CON EXITO ---")
             print(f"URL Final alcanzada: {driver.current_url}")
             
             # Si llegamos aquí sin errores de Selenium, el test es un ÉXITO
             self.assertTrue(True)
             
         except Exception as e:
-            print(f"Error técnico durante el envío: {str(e)}")
+            print(f"Error tecnico durante el envio: {str(e)}")
             driver.save_screenshot("error_tecnico.png")
             raise e
 
