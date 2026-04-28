@@ -38,7 +38,7 @@ class TestPractica(unittest.TestCase):
         user_email = f"testuser{random.randint(1, 99999)}@example.com"
 
         # Llenado de formulario con esperas
-        wait.until(EC.visibility_of_element_identity((By.ID, "input-firstname"))).send_keys("Sergio")
+        wait.until(EC.visibility_of_element_located((By.ID, "input-firstname"))).send_keys("Sergio")
         driver.find_element(By.ID, "input-lastname").send_keys("Castaño")
         driver.find_element(By.ID, "input-email").send_keys(user_email)
         driver.find_element(By.ID, "input-telephone").send_keys("123456789")
